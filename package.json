@@ -1,0 +1,33 @@
+{
+  "name": "impact-backend",
+  "version": "1.0.0",
+  "description": "Backend for Impact project (Express + Mongoose boilerplate)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@adminjs/express": "^6.1.1",
+    "@adminjs/prisma": "^5.0.4",
+    "@adminjs/sequelize": "^4.1.1",
+    "@adminjs/sql": "^2.2.6",
+    "@prisma/client": "^6.18.0",
+    "adminjs": "^7.8.17",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "express-session": "^1.17.0",
+    "multer": "^2.0.2",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "prisma": "^6.18.0",
+    "sequelize": "^6.32.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0"
+  },
+  "type": "module"
+}
