@@ -37,7 +37,7 @@ app.use(
 
 // Build connection string from environment variables (prefer DATABASE_URL if present)
 const connectionString =
-	process.env.DATABASE_URL ||
+	process.env.DATABASE_URL_INTERNAL ||
 	`postgresql://${encodeURIComponent(process.env.PG_USER || '')}:${encodeURIComponent(process.env.PG_PASSWORD || '')}@${process.env.PG_HOST || 'localhost'}:${process.env.PG_PORT || 5432}/${process.env.PG_DATABASE || ''}`;
 
 const db = await new Adapter('postgresql', {
