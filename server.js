@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import AdminJS from 'adminjs';
 import AdminJSExpress, { name } from '@adminjs/express';
-import AdminJSSequelize from '@adminjs/sequelize';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 
 
@@ -37,13 +36,16 @@ app.use(
 
 // Build connection string from environment variables (prefer DATABASE_URL if present)
 const connectionString =
-	process.env.DATABASE_URL_INTERNAL ||
-	`postgresql://${encodeURIComponent(process.env.PG_USER || '')}:${encodeURIComponent(process.env.PG_PASSWORD || '')}@${process.env.PG_HOST || 'localhost'}:${process.env.PG_PORT || 5432}/${process.env.PG_DATABASE || ''}`;
+	process.env.DATABASE_URL ;
 
+  console.log('Using DB connection string:', connectionString);
 const db = await new Adapter('postgresql', {
 	connectionString,
 	database: process.env.PG_DATABASE || undefined,
+  ssl:{ rejectUnauthorized: false }
 }).init();
+
+
 
 
 // AdminJS setup
@@ -157,12 +159,12 @@ app.use('/api/cta', ctaRoutes);
 const PORT = process.env.PORT || 8000;
 
 // Initialize DB (authenticate) and start server
-connectAndSync({ sync: false })
-	.then(() => {
-		app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-	})
-	.catch((err) => {
-		console.error('Failed to initialize database for AdminJS:', err);
-		// Still start server so API routes using pool can work; AdminJS will error until DB is available
-		app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (DB connection failed)`));
-	});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// connectAndSync({ sync: false })
+// 	.then(() => {
+// 	})
+// 	.catch((err) => {
+// 		console.error('Failed to initialize database for AdminJS:', err);
+// 		// Still start server so API routes using pool can work; AdminJS will error until DB is available
+// 		app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (DB connection failed)`));
+// 	});
