@@ -156,7 +156,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/cta', ctaRoutes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 10000;
 
 // Initialize DB (authenticate) and start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
