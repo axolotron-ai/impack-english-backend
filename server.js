@@ -128,7 +128,7 @@ const admin = new AdminJS({
 	rootPath: '/admin',
 });
 
-admin.watch();
+
 
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
@@ -156,7 +156,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/cta', ctaRoutes);
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 8000;
 
 // Initialize DB (authenticate) and start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
