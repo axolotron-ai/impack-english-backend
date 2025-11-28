@@ -23,6 +23,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/healthz", (req, res) => res.send("OK"));
+
 // Simple session middleware for AdminJS auth
 app.use(
 	session({
@@ -41,7 +43,7 @@ const connectionString =
 const db = await new Adapter('postgresql', {
 	connectionString,
 	database: process.env.PG_DATABASE || undefined,
-  ssl:{ rejectUnauthorized: false }
+  ssl:true
 }).init();
 
 
@@ -155,7 +157,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/cta', ctaRoutes);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT;
 
 // Initialize DB (authenticate) and start server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
