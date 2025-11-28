@@ -3,14 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import AdminJS from 'adminjs';
-import AdminJSExpress, { name } from '@adminjs/express';
+import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 
 
 import galleryRoutes from './routes/gallery.js';
 import blogRoutes from './routes/blog.js';
 import ctaRoutes from './routes/cta.js';
-import { sequelize, Blog, GalleryAlbum, GalleryPhoto, connectAndSync } from './models/index.js';
 
 dotenv.config();
 
