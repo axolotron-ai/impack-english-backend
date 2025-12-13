@@ -19,7 +19,7 @@ const { Pool } = pkg;
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    ca: fs.readFileSync("/etc/postgresql-common/root.crt").toString(),
+    ca: fs.readFileSync('./certs/ca.crt').toString(),
     rejectUnauthorized: true
   }
 });
