@@ -44,10 +44,11 @@ const connectionString =
 const db = await new Adapter('postgresql', {
 	connectionString,
 	database: process.env.PG_DATABASE || undefined,
-  ssl: {
-    ca: fs.readFileSync("./certs/ca.crt").toString(),
-    rejectUnauthorized: true
-  }
+  ssl: false
+  // {
+  //   ca: fs.readFileSync("./certs/ca.crt").toString(),
+  //   rejectUnauthorized: true
+  // }
 }).init();
 
 
