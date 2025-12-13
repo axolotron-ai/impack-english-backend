@@ -5,6 +5,7 @@ import session from 'express-session';
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
+import fs from 'fs';
 
 
 import galleryRoutes from './routes/gallery.js';
@@ -43,7 +44,10 @@ const connectionString =
 const db = await new Adapter('postgresql', {
 	connectionString,
 	database: process.env.PG_DATABASE || undefined,
-  ssl:true
+  ssl: {
+    ca: fs.readFileSync("/etc/postgresql-common/root.crt").toString(),
+    rejectUnauthorized: true
+  }
 }).init();
 
 

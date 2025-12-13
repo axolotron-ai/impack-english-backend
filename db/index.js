@@ -1,6 +1,7 @@
 
 import pkg from 'pg';
 import dotenv from 'dotenv';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -16,5 +17,9 @@ const { Pool } = pkg;
 
 //how to connect with connection string
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    ca: fs.readFileSync("/etc/postgresql-common/root.crt").toString(),
+    rejectUnauthorized: true
+  }
 });
