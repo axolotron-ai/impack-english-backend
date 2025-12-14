@@ -5,6 +5,7 @@ import session from 'express-session';
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
+import uploadFeature from '@adminjs/upload';
 import fs from 'fs';
 
 
@@ -96,11 +97,29 @@ const admin = new AdminJS({
           },
           image_url: {
             type: "string",
-            components: {
-              edit: AdminJS.bind("./components/ImageUpload.jsx"), // optional custom uploader
-            },
+            isVisible: { list: true, edit: true, show: true },
           },
         },
+        features: [
+          uploadFeature({
+            provider: {
+              local: {
+                bucket: '/var/www/uploads/gallery',
+              },
+            },
+            properties: {
+              key: 'image_url',   // DB column
+              file: 'uploadImage',
+            },
+            uploadPath: (record, filename) => {
+              return `${Date.now()}-${filename}`;
+            },
+            validation: {
+              mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
+              maxSize: 3 * 1024 * 1024,
+            },
+          }),
+        ],
       },
     },
     {
