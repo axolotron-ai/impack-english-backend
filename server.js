@@ -18,10 +18,10 @@ import ctaRoutes from './routes/cta.js';
 dotenv.config();
 
 
-// const ImagePreview = componentLoader.add(
-//   'ImagePreview',
-//   './components/ImagePreview.jsx'
-// );
+const ImagePreview = componentLoader.add(
+  'ImagePreview',
+  './components/ImagePreview.jsx'
+);
 
 // Register the Sequelize adapter for AdminJS
 AdminJS.registerAdapter({
@@ -106,10 +106,10 @@ const admin = new AdminJS({
           },
           image_url: {
             isVisible: { list: true, edit: true, show: true },
-            // components: {
-            //   list: ImagePreview,
-            //   show: ImagePreview,
-            // },
+            components: {
+              list: ImagePreview,
+              show: ImagePreview,
+            },
           },
         },
       },
