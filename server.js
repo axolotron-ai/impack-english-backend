@@ -7,6 +7,7 @@ import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
 import fs from 'fs';
+import path from 'path';
 
 
 import galleryRoutes from './routes/gallery.js';
@@ -96,8 +97,11 @@ const admin = new AdminJS({
             isRequired: true,
           },
           image_url: {
-            type: "string",
             isVisible: { list: true, edit: true, show: true },
+            components: {
+              list: AdminJS.bundle('./components/ImagePreview.jsx'),
+              show: AdminJS.bundle('./components/ImagePreview.jsx'),
+            },
           },
         },
       },
@@ -111,9 +115,11 @@ const admin = new AdminJS({
           properties: {
             key: 'image_url',   // DB column
             file: 'uploadImage',
+            filePath: 'image_url'
           },
           uploadPath: (record, filename) => {
-            return `${Date.now()}-${filename}`;
+            const ext = path.extname(filename);
+            return `photos/${record.id || 'new'}-${Date.now()}${ext}`;
           },
           validation: {
             mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
