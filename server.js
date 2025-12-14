@@ -3,13 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import AdminJS , { ComponentLoader } from 'adminjs';
-const componentLoader = new ComponentLoader();
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
 import fs from 'fs';
 import path from 'path';
 
+const componentLoader = new ComponentLoader();
 
 import galleryRoutes from './routes/gallery.js';
 import blogRoutes from './routes/blog.js';
