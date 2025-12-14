@@ -92,6 +92,7 @@ const admin = new AdminJS({
           album_id: {
             type: "reference",
             reference: "gallery_albums", // 👈 relational field
+            isRequired: true,
           },
           image_url: {
             type: "string",
