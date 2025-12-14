@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import AdminJS , { ComponentLoader } from 'adminjs';
+const componentLoader = new ComponentLoader();
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
@@ -16,7 +17,6 @@ import ctaRoutes from './routes/cta.js';
 
 dotenv.config();
 
-const componentLoader = new ComponentLoader();
 
 // const ImagePreview = componentLoader.add(
 //   'ImagePreview',
@@ -115,6 +115,7 @@ const admin = new AdminJS({
       },
       features: [
         uploadFeature({
+          componentLoader,
           provider: {
             local: {
               bucket: '/var/www/uploads/gallery',
