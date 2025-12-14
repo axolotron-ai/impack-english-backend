@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
-import AdminJS from 'adminjs';
+import AdminJS , { ComponentLoader } from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
@@ -15,6 +15,13 @@ import blogRoutes from './routes/blog.js';
 import ctaRoutes from './routes/cta.js';
 
 dotenv.config();
+
+const componentLoader = new ComponentLoader();
+
+const ImagePreview = componentLoader.add(
+  'ImagePreview',
+  './components/ImagePreview.jsx'
+);
 
 // Register the Sequelize adapter for AdminJS
 AdminJS.registerAdapter({
@@ -58,6 +65,7 @@ const db = await new Adapter('postgresql', {
 
 // AdminJS setup
 const admin = new AdminJS({
+  componentLoader,
 	resources: [
     { 
       resource: db.table('blogs'),
@@ -98,10 +106,6 @@ const admin = new AdminJS({
           },
           image_url: {
             isVisible: { list: true, edit: true, show: true },
-            components: {
-              list: AdminJS.bundle('./components/ImagePreview.jsx'),
-              show: AdminJS.bundle('./components/ImagePreview.jsx'),
-            },
           },
         },
       },
