@@ -106,10 +106,10 @@ const admin = new AdminJS({
           },
           image_url: {
             isVisible: { list: true, edit: true, show: true },
-            components: {
-              list: ImagePreview,
-              show: ImagePreview,
-            },
+            // components: {
+            //   list: ImagePreview,
+            //   show: ImagePreview,
+            // },
           },
         },
       },
