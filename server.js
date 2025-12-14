@@ -2,26 +2,29 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import session from 'express-session';
-import AdminJS , { ComponentLoader } from 'adminjs';
+import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
 import fs from 'fs';
 import path from 'path';
+import { componentLoader } from './utils/componentLoader.js';
 
-const componentLoader = new ComponentLoader();
 
 import galleryRoutes from './routes/gallery.js';
 import blogRoutes from './routes/blog.js';
 import ctaRoutes from './routes/cta.js';
+import { type } from 'os';
 
 dotenv.config();
 
+// other imports
 
-const ImagePreview = componentLoader.add(
-  'ImagePreview',
-  './components/ImagePreview.jsx'
-);
+
+
+
+
+
 
 // Register the Sequelize adapter for AdminJS
 AdminJS.registerAdapter({
@@ -59,6 +62,15 @@ const db = await new Adapter('postgresql', {
   //   rejectUnauthorized: true
   // }
 }).init();
+
+// Ensure uploads dir exists for local provider
+try {
+  const uploadsDir = process.env.UPLOADS_DIR || path.join(process.cwd(), 'uploads', 'gallery');
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Uploads dir ready at', uploadsDir);
+} catch (err) {
+  console.warn('Could not create uploads directory:', err.message);
+}
 
 
 
@@ -105,37 +117,34 @@ const admin = new AdminJS({
             isRequired: true,
           },
           image_url: {
-            isVisible: { list: true, edit: true, show: true },
-            components: {
-              list: ImagePreview,
-              show: ImagePreview,
-            },
+            type:"string",
+            // isVisible: { list: true, edit: true, show: true },
           },
         },
       },
-      features: [
-        uploadFeature({
-          componentLoader,
-          provider: {
-            local: {
-              bucket: '/var/www/uploads/gallery',
-            },
-          },
-          properties: {
-            key: 'image_url',   // DB column
-            file: 'uploadImage',
-            filePath: 'image_url'
-          },
-          uploadPath: (record, filename) => {
-            const ext = path.extname(filename);
-            return `photos/${record.id || 'new'}-${Date.now()}${ext}`;
-          },
-          validation: {
-            mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
-            maxSize: 3 * 1024 * 1024,
-          },
-        }),
-      ],
+      // features: [
+      //   uploadFeature({
+      //     componentLoader,
+      //     provider: {
+      //       local: {
+      //         // Use configurable uploads dir (defaults to ./uploads/gallery for dev).
+      //         bucket: process.env.UPLOADS_DIR || path.join(process.cwd(), 'uploads', 'gallery'),
+      //       },
+      //     },
+      //     properties: {
+      //       key: 'image_url',   // DB column
+      //       file: 'uploadImage'
+      //     },
+      //     uploadPath: (record, filename) => {
+      //       const ext = path.extname(filename);
+      //       return `photos/${record.id || 'new'}-${Date.now()}${ext}`;
+      //     },
+      //     validation: {
+      //       mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
+      //       maxSize: 3 * 1024 * 1024,
+      //     },
+      //   }),
+      // ],
     },
     {
       resource: db.table('cta_buttons'),
