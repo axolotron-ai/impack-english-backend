@@ -100,27 +100,27 @@ const admin = new AdminJS({
             isVisible: { list: true, edit: true, show: true },
           },
         },
-        features: [
-          uploadFeature({
-            provider: {
-              local: {
-                bucket: '/var/www/uploads/gallery',
-              },
-            },
-            properties: {
-              key: 'image_url',   // DB column
-              file: 'uploadImage',
-            },
-            uploadPath: (record, filename) => {
-              return `${Date.now()}-${filename}`;
-            },
-            validation: {
-              mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
-              maxSize: 3 * 1024 * 1024,
-            },
-          }),
-        ],
       },
+      features: [
+        uploadFeature({
+          provider: {
+            local: {
+              bucket: '/var/www/uploads/gallery',
+            },
+          },
+          properties: {
+            key: 'image_url',   // DB column
+            file: 'uploadImage',
+          },
+          uploadPath: (record, filename) => {
+            return `${Date.now()}-${filename}`;
+          },
+          validation: {
+            mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
+            maxSize: 3 * 1024 * 1024,
+          },
+        }),
+      ],
     },
     {
       resource: db.table('cta_buttons'),
