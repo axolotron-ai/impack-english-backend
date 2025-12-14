@@ -18,10 +18,10 @@ dotenv.config();
 
 const componentLoader = new ComponentLoader();
 
-const ImagePreview = componentLoader.add(
-  'ImagePreview',
-  './components/ImagePreview.jsx'
-);
+// const ImagePreview = componentLoader.add(
+//   'ImagePreview',
+//   './components/ImagePreview.jsx'
+// );
 
 // Register the Sequelize adapter for AdminJS
 AdminJS.registerAdapter({
