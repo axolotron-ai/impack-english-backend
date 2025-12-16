@@ -4,25 +4,46 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import AdminJS from 'adminjs';
 import AdminJSExpress from '@adminjs/express';
+import { ComponentLoader } from 'adminjs';
 import { Adapter, Resource, Database } from '@adminjs/sql';
 import uploadFeature from '@adminjs/upload';
+
 import fs from 'fs';
 import path from 'path';
-import { componentLoader } from './utils/componentLoader.js';
+// import { componentLoader } from './utils/componentLoader.js';
 
 
 import galleryRoutes from './routes/gallery.js';
 import blogRoutes from './routes/blog.js';
 import ctaRoutes from './routes/cta.js';
-import { type } from 'os';
+import { features } from 'process';
 
 dotenv.config();
 
 // other imports
 
+const componentLoader = new ComponentLoader();
 
+const galleryUploadFeature = uploadFeature({
+  componentLoader,
+  provider: {
+    local: {
+      bucket: path.join(process.cwd(), "uploads"),
+    },
+  },
 
+  properties: {
+    key: "image_url",   // 👈 ONLY this column will be saved
+  },
 
+  uploadPath: (record, filename) => {
+    return `gallery/${Date.now()}-${filename}`;
+  },
+  validation:  {
+  mimeTypes: ["image/png", "image/jpeg"],
+  maxSize: 5 * 1024 * 1024, // 5MB
+}
+});
 
 
 
@@ -37,6 +58,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/healthz", (req, res) => res.send("OK"));
+
+app.use("/uploads", express.static("uploads"));
+
 
 // Simple session middleware for AdminJS auth
 app.use(
@@ -117,11 +141,14 @@ const admin = new AdminJS({
             isRequired: true,
           },
           image_url: {
-            type:"string",
-            // isVisible: { list: true, edit: true, show: true },
+            // type:"string",
+            isVisible: { list: true, edit: true, show: true, filter: false },
           },
         },
       },
+      features:[
+        galleryUploadFeature
+      ]
       // features: [
       //   uploadFeature({
       //     componentLoader,
@@ -177,6 +204,8 @@ const admin = new AdminJS({
 	],
 	rootPath: '/admin',
 });
+
+admin.watch();
 
 
 
