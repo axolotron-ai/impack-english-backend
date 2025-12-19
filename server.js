@@ -142,10 +142,22 @@ const admin = new AdminJS({
           },
           image_url: {
             // type:"string",
-            isVisible: { list: true, edit: true, show: true, filter: false },
+            isVisible: { list: true, edit: false, show: false, filter: false },
           },
         },
       },
+      actions: {
+      new: {
+        before: async (request) => {
+          if (request.payload && !request.payload.image_url) {
+            request.payload.image_url = '/images/default-image.png';
+          }
+          return request;
+        },
+      },
+
+      
+    },
       features:[
         galleryUploadFeature
       ]
